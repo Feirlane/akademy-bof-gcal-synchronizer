@@ -1,0 +1,3 @@
+beautifulsoup4==4.3.2
+spynner==2.19
+oauth2client==1.4.12
