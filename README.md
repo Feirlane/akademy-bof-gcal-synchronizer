@@ -1,5 +1,4 @@
-# akademy-bof-gcal-synchronizer
-Akademy 2015 BoF Google Calendar Synchronizer
+# Akademy 2015 BoF Google Calendar Synchronizer
 
 This script will synchronize the events on the Akademy 2015 Community wiki with a google calendar. It'll try to never delete events when they are modified on the wiki, and instead find and update the corresponding event on google calendar.
 
