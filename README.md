@@ -13,11 +13,11 @@ If you want to run on a headless server Spynner will need an X session. You can 
 ## Usage
 Just run
 
-    python syncbofs.py googleCalendarId
+    python2 syncbofs.py googleCalendarId
   
 or
 
-    xvfb-run python syncbofs.py googleCalendarId
+    xvfb-run python2 syncbofs.py googleCalendarId
 
 if you're using a headless installation
 
