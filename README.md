@@ -1,5 +1,4 @@
-# akademy-bof-gcal-synchronizer
-Akademy 2015 BoF Google Calendar Synchronizer
+# Akademy 2015 BoF Google Calendar Synchronizer
 
 This script will synchronize the events on the Akademy 2015 Community wiki with a google calendar. It'll try to never delete events when they are modified on the wiki, and instead find and update the corresponding event on google calendar.
 
@@ -13,11 +12,11 @@ If you want to run on a headless server Spynner will need an X session. You can 
 ## Usage
 Just run
 
-    python syncbofs.py googleCalendarId
+    python2 syncbofs.py googleCalendarId
   
 or
 
-    xvfb-run python syncbofs.py googleCalendarId
+    xvfb-run python2 syncbofs.py googleCalendarId
 
 if you're using a headless installation
 
