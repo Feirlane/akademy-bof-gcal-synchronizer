@@ -61,13 +61,11 @@ class WikiEvent:
 
     def __init__(self, startDateTime, location, subject, comments):
         self.startDateTime = startDateTime
+        self.endDateTime = None
         self.location = location
         self.subject = subject
         self.comments = comments
         self.duration = 1
-
-    def endTime(self):
-        return (self.startDateTime + datetime.timedelta(hours=self.duration))
 
     def timeToStr(self, dt):
         return dt.strftime('%Y-%m-%dT%H:%M:00+02:00')
@@ -76,7 +74,10 @@ class WikiEvent:
         return self.timeToStr(self.startDateTime)
 
     def endTimeStr(self):
-        return self.timeToStr(self.endTime())
+        if not self.endDateTime:
+            self.endDateTime = (self.startDateTime
+                                + datetime.timedelta(hours=self.duration))
+        return self.timeToStr(self.endDateTime)
 
 
 def get_credentials():
@@ -132,7 +133,6 @@ def getWikiEvents():
                   + 'Gecko/20100101 Firefox/39.0')])
     browser.load("https://community.kde.org/Akademy/2015/Monday", )
 
-    lastEvent = None
     events = []
     for day in DAYS:
         #  Events in all tables for which we want to show only one entry
@@ -145,6 +145,7 @@ def getWikiEvents():
         for table in tables:
             rows = table.select('tr')
             location = None
+            lastEvent = None
             for row in rows:
                 for cell in row.select('th'):
                     if not location:
@@ -161,23 +162,32 @@ def getWikiEvents():
                         comments = cell.text.strip()
 
                 if time and what:
-                    if what in SKIP:
-                        lastEvent = None
-                    elif what in COMMON and COMMON[what]:
-                        lastEvent = None
-                    elif lastEvent and what == lastEvent.subject:
+                    if lastEvent and what == lastEvent.subject:
                         lastEvent.duration += 1
                     else:
-                        if what in COMMON:
-                            location = 'Auditorium'
-                            COMMON[what] = True
                         h, m = map(int, time.split(':'))
+                        newStartTime = datetime.datetime.combine(currentDate,
+                                                                  datetime.time(h, m))
                         e = WikiEvent(
-                            datetime.datetime.combine(currentDate,
-                                                      datetime.time(h, m)),
+                            newStartTime,
                             location,
                             what,
                             comments)
+
+                        if lastEvent:
+                            lastEvent.endDateTime = newStartTime
+
+                        if what in SKIP:
+                            lastEvent = False
+                            continue
+
+                        if what in COMMON:
+                            if COMMON[what]:
+                                continue
+                            else:
+                                location = 'Auditorium'
+                                COMMON[what] = True
+
                         dayEvents.append(e)
                         lastEvent = e
         currentDate += datetime.timedelta(days=1)
