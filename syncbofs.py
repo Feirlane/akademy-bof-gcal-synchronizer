@@ -121,6 +121,8 @@ def getGCalEvents(service):
 
 def getWikiEvents():
     DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    #  Name of the events we don't want on the calendar
+    SKIP = ['Lunch', 'Daytrip']
 
     currentDate = datetime.date(2015, 7, 27)
 
@@ -157,7 +159,7 @@ def getWikiEvents():
                         comments = cell.text.strip()
 
                 if time and what:
-                    if what == 'Lunch' or what == 'Daytrip':
+                    if what in SKIP:
                         lastEvent = None
                     elif lastEvent and what == lastEvent.subject:
                         lastEvent.duration += 1
