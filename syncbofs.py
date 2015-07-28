@@ -268,8 +268,8 @@ def main():
     print(len(matches['stayed']), 'events stayed the same')
     print(len(matches['moved']), 'events moved')
     for w, g in matches['moved']:
-        print('\tWiki:', w.startTimeStr(), w.subject)
-        print('\tGcal:', g['start']['dateTime'], g['summary'])
+        print('\tWiki:', w.startTimeStr(), w.endTimeStr(), w.subject)
+        print('\tGcal:', g['start']['dateTime'], g['end']['dateTime'], g['summary'])
         print
         g['start']['dateTime'] = w.startTimeStr()
         g['end']['dateTime'] = w.endTimeStr()
@@ -280,7 +280,7 @@ def main():
 
     print(len(matches['created']), 'events created')
     for w in matches['created']:
-        print('\tWiki:', w.startTimeStr(), w.subject)
+        print('\tWiki:', w.startTimeStr(), w.endTimeStr(), w.subject)
         newEvent = {
             'summary': w.subject,
             'description': w.comments,
@@ -292,7 +292,7 @@ def main():
                                 body=newEvent).execute()
     print(len(matches['removed']), 'events removed')
     for g in matches['removed']:
-        print('\tGcal:', g['start']['dateTime'], g['summary'])
+        print('\tGcal:', g['start']['dateTime'], g['end']['dateTime'], g['summary'])
         service.events().delete(calendarId=flags.calendarId,
                                 eventId=g['id']).execute()
 
