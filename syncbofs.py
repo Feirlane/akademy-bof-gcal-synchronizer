@@ -185,7 +185,7 @@ def getWikiEvents():
                             if COMMON[what]:
                                 continue
                             else:
-                                location = 'Auditorium'
+                                e.location = 'Auditorium'
                                 COMMON[what] = True
 
                         dayEvents.append(e)
