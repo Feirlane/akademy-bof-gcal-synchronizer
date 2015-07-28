@@ -135,6 +135,8 @@ def getWikiEvents():
     lastEvent = None
     events = []
     for day in DAYS:
+        #  Events in all tables for which we want to show only one entry
+        COMMON = {'BoF wrap-up session in auditorium': False}
         html = browser.download("https://community.kde.org/Akademy/2015/"
                                 + day)
         soup = BeautifulSoup(html)
@@ -161,9 +163,14 @@ def getWikiEvents():
                 if time and what:
                     if what in SKIP:
                         lastEvent = None
+                    elif what in COMMON and COMMON[what]:
+                        lastEvent = None
                     elif lastEvent and what == lastEvent.subject:
                         lastEvent.duration += 1
                     else:
+                        if what in COMMON:
+                            location = 'Auditorium'
+                            COMMON[what] = True
                         h, m = map(int, time.split(':'))
                         e = WikiEvent(
                             datetime.datetime.combine(currentDate,
