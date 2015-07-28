@@ -241,17 +241,6 @@ def match(wikiEvents, gcalEvents):
     return matches
 
 
-def printUsage():
-    print(APPLICATION_NAME)
-    print()
-    print('Usage: sys.argv[0] --calendarId <calendarId>')
-    print()
-    print('You can get the calendar Id from the iCal URL '
-          + 'of your google calendar')
-    print('it looks like '
-          + '"qkvodipqv8d2mp09uc80a05b0c@group.calendar.google.com"')
-
-
 def main():
 
     credentials = get_credentials()
